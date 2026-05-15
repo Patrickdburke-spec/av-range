@@ -4,19 +4,17 @@
 <style>
 * { margin:0; padding:0; }
 body { background:transparent; font-family:'Oswald',sans-serif; overflow:hidden; }
-#range { font-size:13px; color:rgba(200,195,190,0.55); font-style:italic; white-space:nowrap; }
+#range { font-size:20px; font-weight:600; color:#ffffff; white-space:nowrap; letter-spacing:0.04em; line-height:1; }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
 <span id="range">...</span>
 <script>
 function fmt(n){return n.toLocaleString('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0});}
-var raw = decodeURIComponent(window.location.search.replace('?v=',''));
-var num = parseFloat(raw.replace(/[$,]/g,''));
-if(!isNaN(num)){
-  document.getElementById('range').innerText = fmt(num*0.95) + ' – ' + fmt(num*1.05);
-}
+var raw=decodeURIComponent(window.location.search.replace('?v=',''));
+var num=parseFloat(raw.replace(/[$,]/g,''));
+if(!isNaN(num)){document.getElementById('range').innerText=fmt(num*0.95)+' – '+fmt(num*1.05);}
 </script>
 </body>
 </html>
