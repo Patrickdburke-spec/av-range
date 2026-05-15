@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* { margin:0; padding:0; }
+body { background:transparent; font-family:'Oswald',sans-serif; overflow:hidden; }
+#range { font-size:13px; color:rgba(200,195,190,0.55); font-style:italic; white-space:nowrap; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400&display=swap" rel="stylesheet">
+</head>
+<body>
+<span id="range">calculating...</span>
+<script>
+function fmt(n){return n.toLocaleString('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0});}
+function calc(){
+  try {
+    var el=window.parent.document.getElementById('av-ihc-raw');
+    if(!el){setTimeout(calc,300);return;}
+    var text=el.textContent.trim();
+    if(!text||!text.includes('$')){setTimeout(calc,300);return;}
+    var num=parseFloat(text.replace(/[$,]/g,''));
+    if(isNaN(num)){setTimeout(calc,300);return;}
+    document.getElementById('range').innerText=fmt(num*0.95)+' – '+fmt(num*1.05);
+  } catch(e){setTimeout(calc,500);}
+}
+setTimeout(calc,1500);
+</script>
+</body>
+</html>
