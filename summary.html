@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:transparent; font-family:'Oswald',sans-serif; overflow:hidden; }
+.row { display:flex; align-items:center; justify-content:space-between; padding:13px 0; border-top:1px solid rgba(255,255,255,0.07); }
+.name { font-size:11px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#c8c3be; }
+.range { font-size:14px; font-weight:600; color:#ffffff; letter-spacing:0.04em; white-space:nowrap; }
+.total-row { display:flex; align-items:center; justify-content:space-between; padding:18px 0 0; border-top:2px solid #DD9C78; margin-top:4px; }
+.total-label { font-size:11px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#DD9C78; }
+.total-range { font-size:22px; font-weight:700; color:#ffffff; letter-spacing:0.04em; white-space:nowrap; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="summary"></div>
+<script>
+function fmt(n){return n.toLocaleString('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0});}
+function parse(str){return parseFloat((str||'').replace(/[$,]/g,''));}
+function range(n){return fmt(n*0.95)+' \u2013 '+fmt(n*1.05);}
+function build(){
+  try {
+    var rows=[...window.parent.document.querySelectorAll('tr.ng-star-inserted')];
+    var data=rows.map(function(row){
+      var cells=[...row.querySelectorAll('td')];
+      if(cells.length<2)return null;
+      var name=cells[0].innerText.trim();
+      var total=cells[cells.length-1].innerText.trim();
+      if(!name||!total.includes('$'))return null;
+      if(name==='Estimated Total')return null;
+      return {name:name,val:parse(total)};
+    }).filter(Boolean);
+    var grandTotal=data.reduce(function(s,r){return s+r.val;},0);
+    var html=data.map(function(r){
+      return '<div class="row"><span class="name">'+r.name+'</span><span class="range">'+range(r.val)+'</span></div>';
+    }).join('');
+    html+='<div class="total-row"><span class="total-label">Total Investment</span><span class="total-range">'+range(grandTotal)+'</span></div>';
+    document.getElementById('summary').innerHTML=html;
+    try{
+      var iframes=[...window.parent.document.querySelectorAll('iframe')];
+      var me=iframes.find(function(f){return f.src&&f.src.includes('summary');});
+      if(me)me.style.height=(document.body.scrollHeight+10)+'px';
+    }catch(e){}
+  }catch(e){setTimeout(build,500);}
+}
+setTimeout(build,1500);
+</script>
+</body>
+</html>
