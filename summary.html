@@ -4,12 +4,63 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:transparent; font-family:'Oswald',sans-serif; overflow:hidden; }
-.row { display:flex; align-items:center; justify-content:space-between; padding:13px 0; border-top:1px solid rgba(255,255,255,0.07); }
-.name { font-size:11px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#c8c3be; }
-.range { font-size:14px; font-weight:600; color:#ffffff; letter-spacing:0.04em; white-space:nowrap; }
-.total-row { display:flex; align-items:center; justify-content:space-between; padding:18px 0 0; border-top:2px solid #DD9C78; margin-top:4px; }
-.total-label { font-size:11px; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#DD9C78; }
-.total-range { font-size:22px; font-weight:700; color:#ffffff; letter-spacing:0.04em; white-space:nowrap; }
+.row {
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  padding:18px 0;
+  border-top:1px solid rgba(255,255,255,0.07);
+}
+.name {
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:rgba(200,195,190,0.7);
+  flex-shrink:0;
+  padding-right:24px;
+}
+.rule {
+  flex:1;
+  height:1px;
+  background:rgba(255,255,255,0.06);
+  margin:0 16px;
+  position:relative;
+  top:-3px;
+}
+.range {
+  font-size:18px;
+  font-weight:600;
+  color:#ffffff;
+  letter-spacing:0.04em;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.total-row {
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  padding:24px 0 0;
+  border-top:2px solid #DD9C78;
+  margin-top:8px;
+}
+.total-label {
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:#DD9C78;
+  flex-shrink:0;
+  padding-right:24px;
+}
+.total-range {
+  font-size:28px;
+  font-weight:700;
+  color:#ffffff;
+  letter-spacing:0.04em;
+  white-space:nowrap;
+  flex-shrink:0;
+}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -33,9 +84,9 @@ function build(){
     }).filter(Boolean);
     var grandTotal=data.reduce(function(s,r){return s+r.val;},0);
     var html=data.map(function(r){
-      return '<div class="row"><span class="name">'+r.name+'</span><span class="range">'+range(r.val)+'</span></div>';
+      return '<div class="row"><span class="name">'+r.name+'</span><span class="rule"></span><span class="range">'+range(r.val)+'</span></div>';
     }).join('');
-    html+='<div class="total-row"><span class="total-label">Total Investment</span><span class="total-range">'+range(grandTotal)+'</span></div>';
+    html+='<div class="total-row"><span class="total-label">Total Investment</span><span class="rule" style="background:rgba(221,156,120,0.2)"></span><span class="total-range">'+range(grandTotal)+'</span></div>';
     document.getElementById('summary').innerHTML=html;
     try{
       var iframes=[...window.parent.document.querySelectorAll('iframe')];
